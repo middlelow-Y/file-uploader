@@ -1,11 +1,32 @@
 <html xmlns:th="https://www.thymeleaf.org">
+<head>
+<script>
+    function deleteCheckedList(){
+    var $positions = document.querySelectorAll(".position-checkbox:checked");
+const positions = [];
+for (let i = 0; i < $positions.length; i++) {
+    positions.push($positions[i].value)
+}
+    console.log(positions);
+    fetch("/positions", {
+    method: 'post',
+    headers: {
+        'content-type': 'application/json'
+    },
+    body : JSON.stringify({
+        positions : positions
+    })
+})
+    }
+</script>
+</head>
 <body>
 
 <div th:if="${message}">
     <h2 th:text="${message}"/>
 </div>
 <div>
-    <form method="POST" enctype="multipart/form-data" action="/">
+    <form method="POST" enctype="multipart/form-data" action="/postfile">
         <table>
             <tr>
                 <td>File to upload:</td>
@@ -19,10 +40,54 @@
     </form>
 </div>
 <div>
+    <form method="POST" enctype="multipart/form-data" action="/postfiles">
+        <table>
+            <tr>
+                <td>Files to upload:</td>
+                <td><input multiple type="file" name="files" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Upload" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+    <form method="POST" enctype="multipart/form-data" action="/deleteAll">
+        <table>
+            <tr>
+                <td>전체 파일 삭제</td>
+                <td>삭제를 원하시면, delete 입력 후 [전체 삭제하기] 버튼을 클릭하세요.</td>
+                <td><input type="text" name="delete-confirm" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="전체 삭제하기" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+    <form method="POST" enctype="multipart/form-data" action="/deleteFile">
+        <table>
+            <tr>
+                <td>개별 파일 삭제 테스트</td>
+                <td>삭제를 원하시면, 파일 명 입력 후버튼을 클릭하세요.</td>
+                <td><input type="text" name="delete-filename" /></td>
+            </tr>
+            <tr>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
     <ul>
         <li th:each="file : ${files}">
             <a th:href="${file}" th:text="${file}" />
+            <input class="position-checkbox" type="checkbox" name="delete-filename" th:value="${file}">
         </li>
+        <button onclick="deleteCheckedList()">체크 삭제하기</button>
     </ul>
 </div>
 
