@@ -5,7 +5,6 @@ public class DeleteRequest {
     private List<String> deleteValues;
 
     public DeleteRequest() {
-        System.out.println(deleteValues);
     }
 
     public DeleteRequest(List<String> deleteValues) {
