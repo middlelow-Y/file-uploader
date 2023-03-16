@@ -79,6 +79,9 @@ public class FileServiceController {
     @PostMapping("/postfile")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
+        if(file.isEmpty()){
+            return "redirect:/";
+        }
         storageService.store(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
@@ -89,19 +92,23 @@ public class FileServiceController {
     @PostMapping("/postfiles")
     public String handleMultiFileUpload(@RequestParam("files") List<MultipartFile> files,
                                         RedirectAttributes redirectAttributes) {
+        if(files.get(0).isEmpty()){
+            return "redirect:/";
+        }
         storageService.multiStore(files);
         String fileData = "";
-
+        int fileCount = 0;
         for(MultipartFile file : files){
             fileData += file.getOriginalFilename() + "   ";
+            fileCount += 1;
         }
 
         redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + fileData);
+                "You successfully uploaded [" + fileCount + "] file");
         return "redirect:/";
     }
 
-    @PostMapping("/deleteall")
+    @PostMapping("/deleteAll")
     public String deleteAllFiles(@RequestParam("delete-confirm") String confirm,
                                  RedirectAttributes redirectAttributes) {
         if(confirm.equals("delete")){
@@ -125,15 +132,14 @@ public class FileServiceController {
     }
 
     @PostMapping("/deletefile")
-    public ResponseEntity<Void> join(@RequestBody PositionsRequest positionsRequest,
+    public String join(@RequestBody PositionsRequest positionsRequest,
                                      RedirectAttributes redirectAttributes) {
-        System.out.println(positionsRequest);
         for(String fileName : positionsRequest.getPositions()){
             storageService.deleteFile(fileName);
         }
         redirectAttributes.addFlashAttribute("message",
                 "파일이 삭제되었습니다.");
-        return ResponseEntity.noContent().build();
+        return "redirect:/";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

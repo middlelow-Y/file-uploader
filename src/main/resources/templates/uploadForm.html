@@ -1,58 +1,127 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-<script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link href="/css/uploadpage.css" rel="stylesheet">
+    <script>
     function deleteCheckedList(){
     var $positions = document.querySelectorAll(".position-checkbox:checked");
 const positions = [];
 for (let i = 0; i < $positions.length; i++) {
     positions.push($positions[i].value)
 }
-    console.log(positions);
     fetch("/deletefile", {
     method: 'post',
+    redirect: 'follow',
     headers: {
         'content-type': 'application/json;charset=UTF-8'
     },
     body : JSON.stringify({
         positions : positions
     })
-})
+}).then(() => {
+            window.location.reload();
+        })
     }
+
+    $(document).ready(function() {
+			$("#cbx_chkAll").click(function() {
+				if($("#cbx_chkAll").is(":checked")) $("input[name=delete-filename]").prop("checked", true);
+				else $("input[name=delete-filename]").prop("checked", false);
+			});
+
+			$("input[name=chk]").click(function() {
+				var total = $("input[name=delete-filename]").length;
+				var checked = $("input[name=delete-filename]:checked").length;
+
+				if(total != checked) $("#cbx_chkAll").prop("checked", false);
+				else $("#cbx_chkAll").prop("checked", true);
+			});
+		});
 </script>
 </head>
 <body>
 
-<div th:if="${message}">
-    <h2 th:text="${message}"/>
+<div class="container">
+    <div class="row" style="text-align:center">
+        <h1>파일 업로드/경로 생성기</h1>
+    </div>
+        <form method="POST" enctype="multipart/form-data" action="/postfile">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img src="/image/baby-hippo.png" style="width:100%;height:100%;">
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-8 col-sm-6">
+                                <h2>단일 파일 업로드</h2>
+                            </div>
+                            <div class="col-4 col-sm-6">
+                                <input type="file" name="file" />
+                                <input type="submit" value="Upload" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    <div class="row">
+        <form method="POST" enctype="multipart/form-data" action="/postfiles">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img src="/image/baby-hippo2.png" style="width:100%;height:100%;">
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-8 col-sm-6">
+                                <h2>여러 파일 업로드</h2>
+                            </div>
+                            <div class="col-4 col-sm-6">
+                                <input multiple type="file" name="files" />
+                                <input type="submit" value="Upload" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 </div>
+    <div th:if="${message}">
+        <div th:text="${message}"/>
+    </div>
 <div>
-    <form method="POST" enctype="multipart/form-data" action="/postfile">
-        <table>
-            <tr>
-                <td>File to upload:</td>
-                <td><input type="file" name="file" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Upload" /></td>
-            </tr>
-        </table>
-    </form>
+    <div >
+        <input class="position-checkbox" type="checkbox" id="cbx_chkAll" /><th>전체 선택</th>
+        <button class="btn btn-primary" onclick="deleteCheckedList()">체크 삭제하기</button>
+    </div>
+    <ul class="list-group">
+        <li th:each="fileData : ${fileDatas}" class="list-group-item">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        <input class="position-checkbox" type="checkbox" name="delete-filename" th:value="${fileData.fileName}">
+                    </div>
+                    <div class="col">
+                        <span th:text="${fileData.fileName}"></span>
+                    </div>
+                    <div class="col">
+                        <a th:href="${fileData.fileFullPath}" th:text="${fileData.fileFullPath}" target="_blank"/>
+                    </div>
+                    <div class="col">
+                        <a th:href="${fileData.fileFullPathDownload}" th:text="다운로드" target="_blank"/>
+                    </div>
+                    <div class="col">
+                        <img th:src="${fileData.fileFullPath}" width="100" height="100">
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
 </div>
-<div>
-    <form method="POST" enctype="multipart/form-data" action="/postfiles">
-        <table>
-            <tr>
-                <td>Files to upload:</td>
-                <td><input multiple type="file" name="files" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Upload" /></td>
-            </tr>
-        </table>
-    </form>
-</div>
+    <!--
 <div>
     <form method="POST" enctype="multipart/form-data" action="/deleteAll">
         <table>
@@ -63,36 +132,11 @@ for (let i = 0; i < $positions.length; i++) {
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" value="전체 삭제하기" /></td>
+                <td><input type="submit" value="전체 삭제하기" class="btn btn-primary" /></td>
             </tr>
         </table>
     </form>
 </div>
-<div>
-    <form method="POST" enctype="multipart/form-data" action="/deleteFile">
-        <table>
-            <tr>
-                <td>개별 파일 삭제 테스트</td>
-                <td>삭제를 원하시면, 파일 명 입력 후버튼을 클릭하세요.</td>
-                <td><input type="text" name="delete-filename" /></td>
-            </tr>
-            <tr>
-            </tr>
-        </table>
-    </form>
-</div>
-<div>
-    <ul>
-        <li th:each="fileData : ${fileDatas}">
-            <span th:text="${fileData.fileName}"></span>
-            <a th:href="${fileData.fileFullPath}" th:text="${fileData.fileFullPath}" target="_blank"/>
-            <a th:href="${fileData.fileFullPathDownload}" th:text="다운로드" target="_blank"/>
-            <img th:src="${fileData.fileFullPath}" width="100" height="100">
-            <input class="position-checkbox" type="checkbox" name="delete-filename" th:value="${fileData.fileName}">
-        </li>
-        <button onclick="deleteCheckedList()">체크 삭제하기</button>
-    </ul>
-</div>
-
+-->
 </body>
 </html>
