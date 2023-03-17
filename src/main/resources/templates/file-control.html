@@ -30,13 +30,13 @@
             content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>파일 업로드 시스템</title>
+    <title>Tables - Basic Tables | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
 
-    <!-- Favicon
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
-    -->
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -120,85 +120,85 @@
             <div class="container-xxl flex-grow-1 container-p-y">
                 <h4 class="fw-bold py-3 mb-4">파일 업로드</h4>
                 <!-- Content -->
-                <div class="card">
-                    <h5 class="card-header">단일 파일 업로드</h5>
-                    <form id="postfile-form" method="POST" enctype="multipart/form-data" th:action="@{/postfile}">
-                        <div class="card-body demo-vertical-spacing demo-only-element">
-                            <div class="input-group">
-                                <input
-                                        type="file"
-                                        class="form-control"
-                                        name="file"
-                                        aria-describedby="inputGroupFileAddon04"
-                                        aria-label="Upload"
-                                />
-                                <button class="btn btn-outline-primary" type="submit" id="inputGroupFileAddon04">업로드</button>
-                            </div>
-                        </div>
-                    </form>
-                    <h5 class="card-header">여러 파일 업로드</h5>
-                    <form id="postfiles-form" method="POST" enctype="multipart/form-data" th:action="@{/postfiles}">
-                        <div class="card-body demo-vertical-spacing demo-only-element">
-                            <div class="input-group">
-                                <input
-                                        multiple
-                                        type="file"
-                                        class="form-control"
-                                        name="files"
-                                        aria-describedby="inputGroupFileAddon04"
-                                        aria-label="Upload"
-                                />
-                                <button class="btn btn-outline-primary" type="submit" id="inputGroupFileAddon05">업로드</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="container-xxl flex-grow-1 container-p-y">
-                <h4 class="fw-bold py-3 mb-4">전체 파일 관리</h4>
-
-                <!-- Basic Bootstrap Table -->
-                <div class="card">
-                    <div>
-                        <h5 class="card-header">파일 목록</h5>
-                        <div style="float:right;padding:10px;"><button class="btn btn-primary" onclick="deleteCheckedList()">체크 삭제하기</button></div>
-                    </div>
-                    <div class="table-responsive text-nowrap">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>선택( <input class="position-checkbox" type="checkbox" id="cbx_chkAll" /> 전체 선택)</th>
-                                <th>파일 명</th>
-                                <th>URL</th>
-                                <th>Status</th>
-                                <th>동작</th>
-                            </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0">
-                            <tr th:each="fileData : ${fileDatas}">
-                                <td><input class="position-checkbox" type="checkbox" name="delete-filename" th:value="${fileData.fileName}"></td>
-                                <td><span th:text="${fileData.fileName}"></span></td>
-                                <td><a th:href="${fileData.fileFullPath}" th:text="${fileData.fileFullPath}" target="_blank"/></td>
-                                <td><span class="badge bg-label-primary me-1">OK</span></td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" th:href="${fileData.fileFullPathDownload}" th:text="다운로드" target="_blank"/>
-                                            <a class="dropdown-item" href="javascript:void(0);"
-                                            ><i class="bx bx-trash me-1"></i> 삭제</a
-                                            >
-                                        </div>
+                        <div class="card">
+                            <h5 class="card-header">단일 파일 업로드</h5>
+                            <form id="postfile-form" method="POST" enctype="multipart/form-data" th:action="@{/postfile}">
+                                <div class="card-body demo-vertical-spacing demo-only-element">
+                                    <div class="input-group">
+                                        <input
+                                                type="file"
+                                                class="form-control"
+                                                name="file"
+                                                aria-describedby="inputGroupFileAddon04"
+                                                aria-label="Upload"
+                                        />
+                                        <button class="btn btn-outline-primary" type="submit" id="inputGroupFileAddon04">업로드</button>
                                     </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                </div>
+                            </form>
+                            <h5 class="card-header">여러 파일 업로드</h5>
+                            <form id="postfiles-form" method="POST" enctype="multipart/form-data" th:action="@{/postfiles}">
+                                <div class="card-body demo-vertical-spacing demo-only-element">
+                                    <div class="input-group">
+                                        <input
+                                                multiple
+                                                type="file"
+                                                class="form-control"
+                                                name="files"
+                                                aria-describedby="inputGroupFileAddon04"
+                                                aria-label="Upload"
+                                        />
+                                        <button class="btn btn-outline-primary" type="submit" id="inputGroupFileAddon05">업로드</button>
+                                    </div>
+                                </div>
+                            </form>
                     </div>
-                </div>
-                <!--/ Basic Bootstrap Table -->
+            </div>
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <h4 class="fw-bold py-3 mb-4">전체 파일 관리</h4>
+
+                    <!-- Basic Bootstrap Table -->
+                    <div class="card">
+                        <div>
+                            <h5 class="card-header">파일 목록</h5>
+                            <div style="float:right;padding:10px;"><button class="btn btn-primary" onclick="deleteCheckedList()">체크 삭제하기</button></div>
+                        </div>
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>선택( <input class="position-checkbox" type="checkbox" id="cbx_chkAll" /> 전체 선택)</th>
+                                    <th>파일 명</th>
+                                    <th>URL</th>
+                                    <th>Status</th>
+                                    <th>동작</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                <tr th:each="fileData : ${fileDatas}">
+                                    <td><input class="position-checkbox" type="checkbox" name="delete-filename" th:value="${fileData.fileName}"></td>
+                                    <td><span th:text="${fileData.fileName}"></span></td>
+                                    <td><a th:href="${fileData.fileFullPath}" th:text="${fileData.fileFullPath}" target="_blank"/></td>
+                                    <td><span class="badge bg-label-primary me-1">OK</span></td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" th:href="${fileData.fileFullPathDownload}" th:text="다운로드" target="_blank"/>
+                                                <a class="dropdown-item" href="javascript:void(0);"
+                                                ><i class="bx bx-trash me-1"></i> 삭제</a
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--/ Basic Bootstrap Table -->
                 <!-- / Content -->
 
                 <!-- Footer -->
