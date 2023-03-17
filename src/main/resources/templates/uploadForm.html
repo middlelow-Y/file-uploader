@@ -12,6 +12,12 @@
 <div class="container">
     <div class="row" style="text-align:center">
         <h1>파일 업로드/경로 생성기</h1>
+        <div class="usr-area">
+            <button class="btn btn-warning usr-area-button" onclick="javascript: document.logoutForm.submit()" role="menuitem"> 로그아웃</button>
+            <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                <input hidden type="submit" value="Sign Out"/>
+            </form>
+        </div>
     </div>
         <form id="postfile-form" method="POST" enctype="multipart/form-data" th:action="@{/postfile}">
             <div class="container text-center">
