@@ -1,53 +1,19 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="/js/uploadpage.js"></script>
     <link href="/css/uploadpage.css" rel="stylesheet">
-    <script>
-    function deleteCheckedList(){
-    var $positions = document.querySelectorAll(".position-checkbox:checked");
-const positions = [];
-for (let i = 0; i < $positions.length; i++) {
-    positions.push($positions[i].value)
-}
-    fetch("/deletefile", {
-    method: 'post',
-    redirect: 'follow',
-    headers: {
-        'content-type': 'application/json;charset=UTF-8'
-    },
-    body : JSON.stringify({
-        positions : positions
-    })
-}).then(() => {
-            window.location.reload();
-        })
-    }
-
-    $(document).ready(function() {
-			$("#cbx_chkAll").click(function() {
-				if($("#cbx_chkAll").is(":checked")) $("input[name=delete-filename]").prop("checked", true);
-				else $("input[name=delete-filename]").prop("checked", false);
-			});
-
-			$("input[name=chk]").click(function() {
-				var total = $("input[name=delete-filename]").length;
-				var checked = $("input[name=delete-filename]:checked").length;
-
-				if(total != checked) $("#cbx_chkAll").prop("checked", false);
-				else $("#cbx_chkAll").prop("checked", true);
-			});
-		});
-</script>
 </head>
 <body>
-
 <div class="container">
     <div class="row" style="text-align:center">
         <h1>파일 업로드/경로 생성기</h1>
     </div>
-        <form method="POST" enctype="multipart/form-data" action="/postfile">
+        <form id="postfile-form" method="POST" enctype="multipart/form-data" th:action="@{/postfile}">
             <div class="container text-center">
                 <div class="row">
                     <div class="col-sm-3">
@@ -60,7 +26,7 @@ for (let i = 0; i < $positions.length; i++) {
                             </div>
                             <div class="col-4 col-sm-6">
                                 <input type="file" name="file" />
-                                <input type="submit" value="Upload" class="btn btn-primary" />
+                                <button type="submit" class="btn btn-primary">업로드</button>
                             </div>
                         </div>
                     </div>
@@ -68,7 +34,7 @@ for (let i = 0; i < $positions.length; i++) {
             </div>
         </form>
     <div class="row">
-        <form method="POST" enctype="multipart/form-data" action="/postfiles">
+        <form id="postfiles-form" method="POST" enctype="multipart/form-data" th:action="@{/postfiles}">
             <div class="container text-center">
                 <div class="row">
                     <div class="col-sm-3">
@@ -81,13 +47,14 @@ for (let i = 0; i < $positions.length; i++) {
                             </div>
                             <div class="col-4 col-sm-6">
                                 <input multiple type="file" name="files" />
-                                <input type="submit" value="Upload" class="btn btn-primary" />
+                                <button type="submit" class="btn btn-primary">업로드</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
+    </div>
 </div>
     <div th:if="${message}">
         <div th:text="${message}"/>

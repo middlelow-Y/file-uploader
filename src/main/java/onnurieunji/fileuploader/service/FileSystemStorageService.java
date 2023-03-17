@@ -112,7 +112,6 @@ public class FileSystemStorageService implements StorageService {
     public boolean deleteFile(String fileName){
         try {
             Path file = rootLocation.resolve(fileName);
-            System.out.println(file);
             return Files.deleteIfExists(file);
         } catch (IOException e) {
             throw new RuntimeException("Error: " + e.getMessage());

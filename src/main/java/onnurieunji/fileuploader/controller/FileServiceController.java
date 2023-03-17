@@ -115,7 +115,6 @@ public class FileServiceController {
             storageService.deleteAll();
             redirectAttributes.addFlashAttribute("message",
                     "전체 파일이 삭제되었습니다.");
-            System.out.println(confirm + "delete");
             return "redirect:/";
         }
         return "redirect:/";
@@ -125,7 +124,6 @@ public class FileServiceController {
     public String deleteFile(@RequestBody DeleteRequest deleteRequest,
                                  RedirectAttributes redirectAttributes) {
 //        storageService.deleteFile(fileName);
-        System.out.println(deleteRequest);
         redirectAttributes.addFlashAttribute("message",
                 "파일이 삭제되었습니다.");
         return "redirect:/";
