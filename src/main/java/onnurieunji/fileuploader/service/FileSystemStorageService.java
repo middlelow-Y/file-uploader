@@ -2,6 +2,7 @@ package onnurieunji.fileuploader.service;
 
 import onnurieunji.fileuploader.storage.StorageException;
 import onnurieunji.fileuploader.storage.StorageFileNotFoundException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -9,14 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -53,6 +53,12 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
+    @Override
+    public void multiStore(List<MultipartFile> files) {
+        for(MultipartFile file : files) {
+            store(file);
+        }
+    }
     @Override
     public Stream<Path> loadAll() {
         try {
@@ -91,8 +97,25 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    public boolean deleteAll() {
+//        try {
+//            Path file = rootLocation.resolve(fileName);
+//            System.out.println(file);
+//            return Files.deleteIfExists(file);
+//        } catch (IOException e) {
+//            throw new RuntimeException("Error: " + e.getMessage());
+//        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteFile(String fileName){
+        try {
+            Path file = rootLocation.resolve(fileName);
+            return Files.deleteIfExists(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
     }
 
     @Override
