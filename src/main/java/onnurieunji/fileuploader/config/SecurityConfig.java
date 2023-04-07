@@ -11,14 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        // 스프링 시큐리티 룰을 무시하는 URL 규칙
-        web.ignoring()
-                .antMatchers("/js/**","/css/**","/files/**","/download/**","html/**");
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/files/**", "download/**").permitAll()
+                .antMatchers("/**").authenticated()
+                .and()
+                .formLogin()
+                .and()
+                .logout();
     }
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-////        http
-////                .csrf().disable();
-//    }
 }

@@ -1,109 +1,293 @@
-<html xmlns:th="https://www.thymeleaf.org">
+<!DOCTYPE html>
+
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html
+        xmlns:th="https://www.thymeleaf.org"
+        lang="en"
+        class="light-style layout-menu-fixed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="../assets/"
+        data-template="vertical-menu-template-free"
+>
 <head>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <meta charset="utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>파일 업로드 시스템</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    -->
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="../assets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="../assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="../assets/js/config.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="/js/uploadpage.js"></script>
-    <link href="/css/uploadpage.css" rel="stylesheet">
 </head>
+
 <body>
-<div class="container">
-    <div class="row" style="text-align:center">
-        <h1>파일 업로드/경로 생성기</h1>
-    </div>
-        <form id="postfile-form" method="POST" enctype="multipart/form-data" th:action="@{/postfile}">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <img src="/image/baby-hippo.png" style="width:100%;height:100%;">
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Layout container -->
+        <div class="layout-without-menu layout-page">
+            <!-- Navbar -->
+
+            <nav
+                    class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                    id="layout-navbar"
+            >
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                    <!-- Search -->
+                    <div class="navbar-nav align-items-center">
+                        <div class="nav-item d-flex align-items-center">
+                            <i class="bx bx-search fs-4 lh-0"></i>
+                            <input
+                                    type="text"
+                                    class="form-control border-0 shadow-none"
+                                    placeholder="Search..."
+                                    aria-label="Search..."
+                            />
+                        </div>
                     </div>
-                    <div class="col-sm-9">
-                        <div class="row">
-                            <div class="col-8 col-sm-6">
-                                <h2>단일 파일 업로드</h2>
-                            </div>
-                            <div class="col-4 col-sm-6">
-                                <input type="file" name="file" />
-                                <button type="submit" class="btn btn-primary">업로드</button>
-                            </div>
+                    <!-- /Search -->
+
+                    <ul class="navbar-nav flex-row align-items-center ms-auto">
+                        <!-- Place this tag where you want the button to render. -->
+                        <li class="nav-item lh-1 me-3">
+                            <button class="btn btn-warning usr-area-button" onclick="javascript: document.logoutForm.submit()" role="menuitem"> 로그아웃</button>
+                            <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                <input hidden type="submit" value="Sign Out"/>
+                            </form>
+                        </li>
+                        <!--/ User -->
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <!-- Card Groups -->
+            <div class="container-xxl flex-grow-1 container-p-y" style="display:none">
+                <h4 class="fw-bold py-3 mb-4">하마에 관하여...</h4>
+                <div class="card-group mb-5">
+                    <div class="card">
+                        <img class="card-img-top" src="../image/baby-hippo.gif" alt="Card image cap" />
+                        <div class="card-body">
+                            <h5 class="card-title">하마</h5>
+                            <p class="card-text">
+                                하마(河,馬)는 우제목 하마과의 포유류이다. 아프리카의 대표적 동물 중 하나. 이름은 '강에서 사는 말'이라는 뜻이지만 소와 같은 우제목인지라 말과는 거리가 멀다. 초식에 얼굴이 길다는 것 외엔 발굽도 다르고 사는 데도 달라 별 공통점이 없는데 어째서 말이라는 이름이 붙었는지는 불명.
+                                <br /><br /> 근연종으로는 작고 순한 피그미하마와 마다가스카르, 지중해에서 살던 난쟁이하마가 있다. 신생대 플리오세에 등장해 플라이스토세에서 멸종한 근연종인 히포포타무스 고르곱스가 있는데 몸무게만 4t에 달하고 현생 하마보다 훨씬 거대했다고 한다.
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="../image/baby-hippo2.gif" alt="Card image cap" />
+                        <div class="card-body">
+                            <h5 class="card-title">생활 방식</h5>
+                            <p class="card-text">
+                                평균 20~30마리 정도가 무리지어 생활한다.
+                                하마가 물 속에서 수영을 한다고 알려져 있으나, 실제로는 하마는 물에 들어가는 순간 그대로 가라앉는다. 하마의 몸은 부력이 낮아 수영을 하기에는 적합하지 않다. 물 속에서 하마는 밑바닥을 짚고 다니면서 앞으로 나아가거나, 물 속에서 도약해서 수면으로 나온다. 이런 수중생활 방식 탓에 하마는 악어와 달리 수심 깊은 원양으로 나가는 것이 불가능하다. 하마는 수심이 너무 깊고 짚고 도약할 만한 지형지물마저 없으면 익사한다.
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="../image/baby-hippo3.gif" alt="Card image cap" />
+                        <div class="card-body">
+                            <h5 class="card-title">스펙</h5>
+                            <p class="card-text">
+                                하마는 만 7살에 성체가 되는데 수컷은 만 6살이 되면 몸무게가 1200kg까지 나가는 거구로 성장하며, 달리기도 시속 50km에 송곳니도 20cm까지 자란다. 이때부터 1대1로 하마에게 대적할 동물은 동족뿐이며, 성체 코뿔소에게는 불리하지만 코뿔소도 성체 하마는 다른 동물처럼 만만히 보지 못한다. 하마를 상대로 확실히 우위를 점할 수 있는 동물은 아프리카코끼리뿐이다.
+                                <br /><br />아프리카에서 코끼리, 흰코뿔소 다음으로 큰 몸집의 동물이며, 전세계 기준으로 하면 인도코끼리, 인도코뿔소 등등에게 밀려서 6위다. 수컷 하마의 몸무게는 1.5~1.8t, 암컷은 0.65~1.5t 정도다. 2t 정도만 되면 매우 커다란 개체이며, 이 정도로 큰 개체는 요즘은 보기 어려운 편이다. 몸길이는 3.5~5.5m, 키는 1.3~1.7m에 달한다. 저렇게나 덩치가 큰 놈이 지상에서도 최고 시속 45km 이상으로 달린다. 일단 달리면 사람은 절대 벗어나지 못한다. 수영 속도도 장난이 아니라서 모터 보트를 쫓아올 정도다. 1톤 트럭에 받히는 것과 같다.
+                            </p>
+                        </div>
+                        <div class="card-footer">
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
-    <div class="row">
-        <form id="postfiles-form" method="POST" enctype="multipart/form-data" th:action="@{/postfiles}">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <img src="/image/baby-hippo2.png" style="width:100%;height:100%;">
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="row">
-                            <div class="col-8 col-sm-6">
-                                <h2>여러 파일 업로드</h2>
-                            </div>
-                            <div class="col-4 col-sm-6">
-                                <input multiple type="file" name="files" />
-                                <button type="submit" class="btn btn-primary">업로드</button>
+            <div class="container-xxl flex-grow-1 container-p-y">
+                <h4 class="fw-bold py-3 mb-4">파일 업로드</h4>
+                <!-- Content -->
+                <div class="card">
+                    <h5 class="card-header">단일 파일 업로드</h5>
+                    <form id="postfile-form" method="POST" enctype="multipart/form-data" th:action="@{/postfile}">
+                        <div class="card-body demo-vertical-spacing demo-only-element">
+                            <div class="input-group">
+                                <input
+                                        type="file"
+                                        class="form-control"
+                                        name="file"
+                                        aria-describedby="inputGroupFileAddon04"
+                                        aria-label="Upload"
+                                />
+                                <button class="btn btn-outline-primary" type="submit" id="inputGroupFileAddon04">업로드</button>
                             </div>
                         </div>
-                    </div>
+                    </form>
+                    <h5 class="card-header">여러 파일 업로드</h5>
+                    <form id="postfiles-form" method="POST" enctype="multipart/form-data" th:action="@{/postfiles}">
+                        <div class="card-body demo-vertical-spacing demo-only-element">
+                            <div class="input-group">
+                                <input
+                                        multiple
+                                        type="file"
+                                        class="form-control"
+                                        name="files"
+                                        aria-describedby="inputGroupFileAddon04"
+                                        aria-label="Upload"
+                                />
+                                <button class="btn btn-outline-primary" type="submit" id="inputGroupFileAddon05">업로드</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
-    </div>
-</div>
-    <div th:if="${message}">
-        <div th:text="${message}"/>
-    </div>
-<div>
-    <div >
-        <input class="position-checkbox" type="checkbox" id="cbx_chkAll" /><th>전체 선택</th>
-        <button class="btn btn-primary" onclick="deleteCheckedList()">체크 삭제하기</button>
-    </div>
-    <ul class="list-group">
-        <li th:each="fileData : ${fileDatas}" class="list-group-item">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col">
-                        <input class="position-checkbox" type="checkbox" name="delete-filename" th:value="${fileData.fileName}">
+            <div class="container-xxl flex-grow-1 container-p-y">
+                <h4 class="fw-bold py-3 mb-4">전체 파일 관리</h4>
+
+                <!-- Basic Bootstrap Table -->
+                <div class="card">
+                    <div>
+                        <h5 class="card-header">파일 목록</h5>
+                        <div style="float:right;padding:10px;"><button class="btn btn-primary" onclick="deleteCheckedList()">체크 삭제하기</button></div>
                     </div>
-                    <div class="col">
-                        <span th:text="${fileData.fileName}"></span>
-                    </div>
-                    <div class="col">
-                        <a th:href="${fileData.fileFullPath}" th:text="${fileData.fileFullPath}" target="_blank"/>
-                    </div>
-                    <div class="col">
-                        <a th:href="${fileData.fileFullPathDownload}" th:text="다운로드" target="_blank"/>
-                    </div>
-                    <div class="col">
-                        <img th:src="${fileData.fileFullPath}" width="100" height="100">
+                    <div class="table-responsive text-nowrap">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>선택( <input class="position-checkbox" type="checkbox" id="cbx_chkAll" /> 전체 선택)</th>
+                                <th>파일 명</th>
+                                <th>URL</th>
+                                <th>Status</th>
+                                <th>동작</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                            <tr th:each="fileData : ${fileDatas}">
+                                <td><input class="position-checkbox" type="checkbox" name="delete-filename" th:value="${fileData.fileName}"></td>
+                                <td><span th:text="${fileData.fileName}"></span></td>
+                                <td><a th:href="${fileData.fileFullPath}" th:text="${fileData.fileFullPath}" target="_blank"/></td>
+                                <td><span class="badge bg-label-primary me-1">OK</span></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" th:href="${fileData.fileFullPathDownload}" th:text="다운로드" target="_blank"/>
+                                            <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-trash me-1"></i> 삭제</a
+                                            >
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+                <!--/ Basic Bootstrap Table -->
+                <!-- / Content -->
+
+                <!-- Footer -->
+                <footer class="content-footer footer bg-footer-theme">
+                    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                        <div class="mb-2 mb-md-0">
+                            ©
+                            <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                            , made with ❤️ by
+                            YJH
+                        </div>
+                    </div>
+                </footer>
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
             </div>
-        </li>
-    </ul>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
 </div>
-    <!--
-<div>
-    <form method="POST" enctype="multipart/form-data" action="/deleteAll">
-        <table>
-            <tr>
-                <td>전체 파일 삭제</td>
-                <td>삭제를 원하시면, delete 입력 후 [전체 삭제하기] 버튼을 클릭하세요.</td>
-                <td><input type="text" name="delete-confirm" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="전체 삭제하기" class="btn btn-primary" /></td>
-            </tr>
-        </table>
-    </form>
-</div>
--->
+<!-- / Layout wrapper -->
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="../assets/vendor/libs/jquery/jquery.js"></script>
+<script src="../assets/vendor/libs/popper/popper.js"></script>
+<script src="../assets/vendor/js/bootstrap.js"></script>
+<script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="../assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+
+<!-- Main JS -->
+<script src="../assets/js/main.js"></script>
+
+<!-- Page JS -->
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>

@@ -30,12 +30,13 @@ import java.util.stream.Collectors;
 
 @Controller
 public class FileServiceController {
-    private final StorageService storageService;
+    //private final StorageService storageService;
 
     @Autowired
-    public FileServiceController(StorageService storageService) {
-        this.storageService = storageService;
-    }
+    private StorageService storageService;
+//    public FileServiceController(StorageService storageService) {
+//        this.storageService = storageService;
+//    }
 
     @GetMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
@@ -51,7 +52,20 @@ public class FileServiceController {
         model.addAttribute("fileDatas", fileDatas);
         return "uploadForm";
     }
-
+    @GetMapping("/filecontrol")
+    public String fileControl(Model model) throws IOException {
+        List<FileDataDTO> fileDatas = storageService.loadAll().map(
+                        p->new FileDataDTO(p.toString(),
+                                MvcUriComponentsBuilder.fromMethodName(FileServiceController.class,
+                                        "serveFileByURL", p.getFileName().toString()).build().toUri().toString(),
+                                MvcUriComponentsBuilder.fromMethodName(FileServiceController.class,
+                                        "serveFileByDownload", p.getFileName().toString()).build().toUri().toString(),
+                                0))
+                .collect(Collectors.toList());
+        //System.out.println(files.toString());
+        model.addAttribute("fileDatas", fileDatas);
+        return "file-control";
+    }
     @GetMapping("/download/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFileByDownload(@PathVariable String filename) {
