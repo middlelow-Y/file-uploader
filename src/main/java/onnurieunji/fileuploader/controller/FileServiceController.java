@@ -30,12 +30,13 @@ import java.util.stream.Collectors;
 
 @Controller
 public class FileServiceController {
-    private final StorageService storageService;
+    //private final StorageService storageService;
 
     @Autowired
-    public FileServiceController(StorageService storageService) {
-        this.storageService = storageService;
-    }
+    private StorageService storageService;
+//    public FileServiceController(StorageService storageService) {
+//        this.storageService = storageService;
+//    }
 
     @GetMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
